@@ -57,8 +57,8 @@ def test_user():
     user = Users(
         username='testuser',
         email='testuser@gmail.com',
-        firstname='test',
-        lastname='user',
+        first_name='test',
+        last_name='user',
         hashed_password=bcrypt_context.hash('testuser_password'),
         role='admin',
         phone_number='0111 111 11 11'

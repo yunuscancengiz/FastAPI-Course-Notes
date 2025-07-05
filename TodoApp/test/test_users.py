@@ -12,8 +12,8 @@ def test_return_user(test_user):
     assert response.status_code == status.HTTP_200_OK
     assert test_user.username == 'testuser'
     assert test_user.email == 'testuser@gmail.com'
-    assert test_user.firstname == 'test'
-    assert test_user.lastname == 'user'
+    assert test_user.first_name == 'test'
+    assert test_user.last_name == 'user'
     assert test_user.role == 'admin'
     assert test_user.phone_number == '0111 111 11 11'
 

@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel, Field
 from ..models import Users
 from passlib.context import CryptContext
 from ..database import SessionLocal
@@ -9,6 +9,7 @@ from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from datetime import timedelta, datetime, timezone
+from fastapi.templating import Jinja2Templates
 
 
 router = APIRouter(prefix='/auth', tags=['auth'])
@@ -23,8 +24,8 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 class CreateUserRequest(BaseModel):
     email: str
     username: str
-    firstname: str
-    lastname: str
+    first_name: str
+    last_name: str
     password: str
     role: str
     phone_number: str
@@ -43,6 +44,21 @@ def get_db():
         db.close()
 
 db_dependency = Annotated[Session, Depends(get_db)]
+templates = Jinja2Templates(directory='TodoApp/templates')
+
+
+### Pages ###
+@router.get('/login-page')
+def render_login_page(request: Request):
+    return templates.TemplateResponse('login.html', {'request': request})
+
+
+@router.get('/register-page')
+def render_register_page(request: Request):
+    return templates.TemplateResponse('register.html', {'request': request})
+
+
+### Endpoints ###
 
 
 def authenticate_user(username: str, password: str, db):
@@ -80,8 +96,8 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
     create_user_model = Users(
         email=create_user_request.email,
         username=create_user_request.username,
-        firstname=create_user_request.firstname,
-        lastname=create_user_request.lastname,
+        first_name=create_user_request.first_name,
+        last_name=create_user_request.last_name,
         hashed_password=bcrypt_context.hash(create_user_request.password),
         role=create_user_request.role,
         is_active=True,

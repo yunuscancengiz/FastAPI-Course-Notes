@@ -37,9 +37,9 @@ def test_list():
 
 
 class Student:
-    def __init__(self, firstname: str, lastname: str, major: str, years: int):
-        self.firstname = firstname
-        self.lastname = lastname
+    def __init__(self, first_name: str, last_name: str, major: str, years: int):
+        self.first_name = first_name
+        self.last_name = last_name
         self.major = major
         self.years = years
 
@@ -47,11 +47,11 @@ class Student:
 
 @pytest.fixture
 def default_employee():
-    return Student(firstname='John', lastname='Doe', major='Computer Science', years=3)
+    return Student(first_name='John', last_name='Doe', major='Computer Science', years=3)
         
 
 def test_person_initialization(default_employee):
-    assert default_employee.firstname == 'John', 'firstname should be John'
-    assert default_employee.lastname == 'Doe', 'lastname should be Doe'
+    assert default_employee.first_name == 'John', 'first name should be John'
+    assert default_employee.last_name == 'Doe', 'last name should be Doe'
     assert default_employee.major == 'Computer Science'
     assert default_employee.years == 3
